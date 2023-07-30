@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { styled } from "styled-components";
 
 function App() {
   const [value, setValue] = useState("");
@@ -10,6 +11,15 @@ function App() {
     event.preventDefault();
     console.log("Hello", value);
   };
+
+  const Container = styled.div`
+    background-color: ${(props) => props.theme.bgColor};
+  `;
+
+  const H1 = styled.h1`
+    color: ${(props) => props.theme.textColor};
+  `;
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -21,6 +31,9 @@ function App() {
         ></input>
         <button>Log In</button>
       </form>
+      <Container>
+        <H1>Hi!!!! Theme Test</H1>
+      </Container>
     </div>
   );
 }
