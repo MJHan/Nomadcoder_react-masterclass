@@ -45,7 +45,7 @@ const Header = styled.header`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.coinBoxColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -77,7 +77,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.coinBoxColor};
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
@@ -85,6 +85,25 @@ const Tab = styled.span<{ isActive: boolean }>`
   a {
     display: block;
   }
+`;
+
+const Button = styled.span`
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: ${(props) => props.theme.btnColor};
+  opacity: 0.7;
+  padding: 7px 0px;
+  border-radius: 10px;
+  color: ${(props) => props.theme.bgColor};
+  a {
+    display: block;
+  }
+  &hover {
+    ${(props) => props.theme.accentColor};
+  }
+  cursor: pointer;
 `;
 
 interface RouteParams {
@@ -148,7 +167,12 @@ interface PriceData {
   };
 }
 
-function Coin() {
+interface ICoinProps {
+  isDark: boolean;
+  toggleDark: () => void;
+}
+
+function Coin({ isDark, toggleDark }: ICoinProps) {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch("/:coinId/price");
@@ -170,6 +194,12 @@ function Coin() {
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </title>
       </Helmet>
+      <Tabs>
+        <Button>
+          <Link to="/">Home</Link>
+        </Button>
+        <Button onClick={toggleDark}>Toggle Dark Mode</Button>
+      </Tabs>
       <Header>
         <Img
           src={
@@ -197,7 +227,7 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Price:</span>
-              <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
+              <span>${tickersData?.quotes?.USD?.price?.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -226,7 +256,7 @@ function Coin() {
               <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart coinId={coinId} />
+              <Chart isDark={isDark} coinId={coinId} />
             </Route>
           </Switch>
         </>

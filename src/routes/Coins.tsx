@@ -5,7 +5,7 @@ import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
 
 const Container = styled.div`
-  padding: 0px 20px;
+  padding: 20px 20px;
   max-width: 480px;
   margin: 0 auto;
 `;
@@ -17,13 +17,39 @@ const Header = styled.header`
   align-items: center;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Button = styled.span`
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: ${(props) => props.theme.btnColor};
+  opacity: 0.7;
+  padding: 7px 10px;
+  border-radius: 10px;
+  color: ${(props) => props.theme.bgColor};
+  a {
+    display: block;
+  }
+  &hover {
+    ${(props) => props.theme.accentColor};
+  }
+  cursor: pointer;
+`;
+
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: white;
-  color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.cardBgColor};
+  color: ${(props) => props.theme.textColor};
   border-radius: 15px;
   margin-bottom: 10px;
+  border: 1px solid white;
   a {
     display: flex;
     align-items: center;
@@ -73,7 +99,11 @@ interface ICoin {
   type: string;
 }
 
-function Coins() {
+interface ICoinsProps {
+  toggleDark: () => void;
+}
+
+function Coins({ toggleDark }: ICoinsProps) {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
   console.log(data);
   return (
@@ -81,6 +111,9 @@ function Coins() {
       <Helmet>
         <title>Coins</title>
       </Helmet>
+      <ButtonWrapper>
+        <Button onClick={toggleDark}>Toggle Dark Mode</Button>
+      </ButtonWrapper>
       <Header>
         <Title>Coins</Title>
       </Header>
