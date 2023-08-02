@@ -1,4 +1,5 @@
 import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import {
   Switch,
   Route,
@@ -15,6 +16,12 @@ import Price from "./Price";
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+`;
+
+const Img = styled.img`
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
 `;
 
 const Loader = styled.span`
@@ -94,6 +101,7 @@ interface InfoData {
   is_new: boolean;
   is_active: boolean;
   type: string;
+  logo: string;
   description: string;
   message: string;
   open_source: boolean;
@@ -143,7 +151,6 @@ interface PriceData {
 function Coin() {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
-
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
@@ -158,7 +165,19 @@ function Coin() {
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
+        <Img
+          src={
+            loading
+              ? ""
+              : `https://coinicons-api.vercel.app/api/icon/${infoData?.symbol.toLowerCase()}`
+          }
+        />
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
@@ -177,8 +196,8 @@ function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price:</span>
+              <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -207,7 +226,7 @@ function Coin() {
               <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart />
+              <Chart coinId={coinId} />
             </Route>
           </Switch>
         </>
