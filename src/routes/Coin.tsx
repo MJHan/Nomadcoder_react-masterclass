@@ -258,7 +258,7 @@ function Coin({ isDark, toggleDark }: ICoinProps) {
 
           <Switch>
             <Route path={`/:coinId/price`}>
-              <Price />
+              <Price isDark={isDark} coinId={coinId} />
             </Route>
             <Route path={`/:coinId/chart`}>
               <Chart isDark={isDark} coinId={coinId} />
