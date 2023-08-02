@@ -12,18 +12,20 @@ interface IHistorical {
   volume: number;
   market_cap: number;
 }
+
 interface ChartProps {
   coinId: string;
-  isDark: boolean;
+  isDark?: boolean;
 }
 function Chart({ coinId, isDark }: ChartProps) {
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
-    () => fetchCoinHistory(coinId),
-    {
-      refetchInterval: 10000,
-    }
+    () => fetchCoinHistory(coinId)
+    // {
+    //   refetchInterval: 10000,
+    // }
   );
+
   return (
     <div>
       {isLoading ? (
@@ -77,6 +79,52 @@ function Chart({ coinId, isDark }: ChartProps) {
           }}
         />
       )}
+      <ApexChart
+        type="candlestick"
+        series={
+          [
+            {
+              data: data?.map((price: IHistorical) => {
+                return {
+                  x: price.time_close,
+                  y: [price.open, price.high, price.low, price.close],
+                };
+              }),
+            },
+          ] as any
+        }
+        options={{
+          theme: {
+            mode: isDark ? "dark" : "light",
+          },
+          chart: {
+            type: "candlestick",
+            height: 300,
+            width: 500,
+            toolbar: {
+              show: false,
+            },
+            background: "transparent",
+          },
+          grid: { show: false },
+          yaxis: {
+            show: false,
+          },
+          xaxis: {
+            axisBorder: { show: false },
+            axisTicks: { show: false },
+            labels: { show: false },
+            type: "datetime",
+            categories: data?.map((price) => price.time_close),
+          },
+
+          tooltip: {
+            y: {
+              formatter: (value) => `$${value.toFixed(2)}`,
+            },
+          },
+        }}
+      />
     </div>
   );
 }

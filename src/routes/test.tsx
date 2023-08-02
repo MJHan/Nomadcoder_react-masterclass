@@ -104,7 +104,9 @@ interface ICoinsProps {
 }
 
 function Coins({ toggleDark }: ICoinsProps) {
-  const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+  // const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+  // console.log(data);
+  const { isLoading, data } = useQuery<ICoin[]>("allCoins");
   return (
     <Container>
       <Helmet>

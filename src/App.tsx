@@ -73,8 +73,6 @@ a {
 function App() {
   const [isDark, setIsDark] = useState(true);
   const toggleDark = () => setIsDark((current) => !current);
-
-  console.log(isDark, "#####");
   return (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
