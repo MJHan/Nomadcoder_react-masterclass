@@ -16,5 +16,4 @@ function Router() {
     </BrowserRouter>
   );
 }
-
 export default Router;
