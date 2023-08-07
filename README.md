@@ -5,4 +5,4 @@
 - http://mjhan.github.io/Nomadcoder_react-masterclass
 
 ## 다음 과제를 위해 repository 이동
-- [http://](https://github.com/MJHan/Nomadcoder_react-masterclass_recoil)
+- https://github.com/MJHan/Nomadcoder_react-masterclass_recoil
